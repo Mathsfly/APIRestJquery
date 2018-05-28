@@ -1,42 +1,65 @@
 "use strict"
 var express = require('express');
+var bodyParser = require('body-parser');
 var path = require('path')
-var database = require('./database/database')
-
-database.initializeMongo();
-
 var app = express();
+app.use(express.static('public'));
+app.set('view engine', 'ejs');
+app.set('views', './views');
+
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
+
+var server = require('http').Server(app);
+
+var contacts = [];
 
 app.get('/', function(req, res){
-	res.sendFile('index.html', {root: path.join(__dirname,'./')})
+    res.render('mainPage')
 });	
 
-app.get('/v1/key/:id', function(req, res){
+app.get('/:id', function(req, res){
     var id = req.params.id;
-    console.log(req.params);
-	database.User.findOne({key: id}, function(err, data) {
-        if (err) return res.send('this key does not exist in database');
-        res.send('We try to find out the user from the "key = '+ id + ' on url:\n ' + 'Value: ' + data.value);
-    })
+    const contact  = contacts.find(function () {
+        contacts.id === id;
+    });
+	if (contact){
+        res.send('The name of {id: '+ id + '} is: {' + data.value + '}');
+    } else {
+        res.send('this id does not exist in database');
+    }
 });	
 
-app.post('/v1/key/:ikey/value/:ivalue', function(req, res){
-    var ikey = req.params.ikey;
-    var ivalue = req.params.ivalue;
-    const result = database.AddUser({
-        key: ikey,
-        value: ivalue
-    })
-    res.redirect('/v1/key/' + ikey)
-});	
-
-app.listen(8081, function () {
-    console.log('app running on 8081')
+app.get('/post-err/:id', function(req, res){
+    var id = req.params.id;
+    res.send('This id = ' + id + ' is not valid');
 })
 
-app.get('/AllUser', function(req, res){
-	database.User.find(function (err, data) {
+app.post('/addContact', function(req, res){
+    const data = req.body;
+    const contact  = contacts.find(function (elm) {
+        return elm.id === data.id;
+    });
+
+    if (!contact){
+        contacts.push(data);
+        console.log(contacts);
+    } else {
+        res.redirect('/post-err/' + data.id);
+    }
+});	
+
+app.post('/loadContacts', function(req, res){
+    res.send(contacts);
+});	
+
+app.get('/AllContact', function(req, res){
+	contacts.find(function (err, data) {
         if (err) return res.error(err);
         res.json(data);
     })
 });	
+
+server.listen(8081, function () {
+    console.log('app running on 8081')
+})

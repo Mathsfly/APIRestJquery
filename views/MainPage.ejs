@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title> Gestion des contacts </title>
+        <script src="jquery.js" > </script>
+        <script src="Process.js"> </script>
+    </head>
+<body>
+    <script type="text/javascript">
+        function OnSubmitForm()
+        {
+            document.myform.action ="/addContact";
+            // Trigger the validations
+            return document.myform.runvalidation();
+        }
+        </script>         
+	<form name = "myform"  class = "">
+		<div id = "User">
+            Add Contact
+        </div>
+		<input type= "text" id = "txtId" placeHolder = "id" autocomplete = "off"></input>
+		<input type= "text" id = "txtName" placeHolder = "name" autocomplete = "off"></input>
+		<input type= "button" id = "btnAdd" value = "Add Contact" ></input>
+    </form>
+    <div id = "listContacts"></div>
+</body>
+</html>
