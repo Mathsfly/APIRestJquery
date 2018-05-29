@@ -15,7 +15,7 @@
             return document.myform.runvalidation();
         }
         </script>         
-	<form name = "myform"  class = "">
+	<form name = "Add"  class = "">
 		<div id = "User">
             Add Contact
         </div>
@@ -23,6 +23,19 @@
 		<input type= "text" id = "txtName" placeHolder = "name" autocomplete = "off"></input>
 		<input type= "button" id = "btnAdd" value = "Add Contact" ></input>
     </form>
-    <div id = "listContacts"></div>
+    <form name = "Modify_delete"  class = "">
+            <div id = "User">
+                Modify and Delete
+            </div>
+            <select id = "cbListContact"></select>
+            <input type = "text" id = "txtNameOfID" autocomplete = "off"></input>
+            <input type = "button" id = "btnModify" value = "Modify" ></input>
+            <input type = "button" id = "btnDelete" value = "Delete" ></input>    
+    </form>
+    <form>
+        <input type= "button" id = "btnLister" value = "Open Contacts List" ></input>
+        <input type= "button" id = "btnHide" value = "Close Contacts List" ></input>
+        <div id = "listContacts"></div>
+    </form>
 </body>
 </html>

@@ -43,14 +43,40 @@ app.post('/addContact', function(req, res){
 
     if (!contact){
         contacts.push(data);
-        console.log(contacts);
     } else {
         res.redirect('/post-err/' + data.id);
     }
-});	
+});
+
+app.post('/ModifyContact', function(req, res){
+    const data = req.body;
+    const contact  = contacts.find(function (elm) {
+        return elm.id === data.id;
+    });
+    if (!contact){
+        res.redirect('/post-err/' + data.id);
+    } else {
+        contact.name = data.name;
+        res.send('modify ok');
+    }
+});		
 
 app.post('/loadContacts', function(req, res){
     res.send(contacts);
+});	
+
+app.delete('/DeleteContact', function(req, res){
+    const data = req.body;
+    const contact  = contacts.find(function (elm) {
+        return elm.id === data.id;
+    });
+    if (!contact){
+        res.redirect('/post-err/' + data.id);
+    } else {
+        let idx = contacts.indexOf(contact);
+        if (idx > -1) contacts.splice(idx,1);
+        res.send('Delete ok');
+    }
 });	
 
 app.get('/AllContact', function(req, res){
@@ -61,5 +87,5 @@ app.get('/AllContact', function(req, res){
 });	
 
 server.listen(8081, function () {
-    console.log('app running on 8081')
+    console.log('app running on 8081');
 })
