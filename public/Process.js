@@ -23,15 +23,15 @@ function SendToServer(_url, _type, _id, _name) {
 		id : _id,
 		name : _name
 	}
-
 	$.ajax({
 		url: _url,
 		type: _type,
 		data: _contact,
 		success: function(response){
+			console.log(response);
+			LoadContacts();
 		}
-	})
-	LoadContacts();
+	});
 }
 
 $(document).ready(function(){
@@ -48,17 +48,17 @@ $(document).ready(function(){
 	LoadContacts()
 
 	$("#btnAdd").click(function(){
-		SendToServer('addContact', 'POST', $("#txtId").val(), $("#txtName").val())
+		SendToServer('/', 'POST', $("#txtId").val(), $("#txtName").val())
 		$("#txtId").val('');
 		$("#txtName").val('');
 	});
 
 	$("#btnModify").click(function(){
-		SendToServer('ModifyContact', 'POST', $("#cbListContact").val(), $("#txtNameOfID").val());
+		SendToServer('/', 'PUT', $("#cbListContact").val(), $("#txtNameOfID").val());
 		$("#txtNameOfID").val('');
 	});
 
 	$("#btnDelete").click(function(){
-		SendToServer('DeleteContact','DELETE', $("#cbListContact").val(), '');
+		SendToServer('/','DELETE', $("#cbListContact").val(), '')
 	});
 });

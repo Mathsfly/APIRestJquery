@@ -35,7 +35,7 @@ app.get('/post-err/:id', function(req, res){
     res.send('This id = ' + id + ' is not valid');
 })
 
-app.post('/addContact', function(req, res){
+app.post('/', function(req, res){
     const data = req.body;
     const contact  = contacts.find(function (elm) {
         return elm.id === data.id;
@@ -43,12 +43,13 @@ app.post('/addContact', function(req, res){
 
     if (!contact){
         contacts.push(data);
+        res.send('add ok');
     } else {
         res.redirect('/post-err/' + data.id);
     }
 });
 
-app.post('/ModifyContact', function(req, res){
+app.put('/', function(req, res){
     const data = req.body;
     const contact  = contacts.find(function (elm) {
         return elm.id === data.id;
@@ -65,7 +66,7 @@ app.post('/loadContacts', function(req, res){
     res.send(contacts);
 });	
 
-app.delete('/DeleteContact', function(req, res){
+app.delete('/', function(req, res){
     const data = req.body;
     const contact  = contacts.find(function (elm) {
         return elm.id === data.id;
